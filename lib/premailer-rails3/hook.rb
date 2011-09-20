@@ -3,15 +3,8 @@ module PremailerRails
     def self.delivering_email(message)
       
       # Convert html part of the message
-      
-      puts "before everything -"
-      puts message.html_part.body.to_s
-      puts message.text_part.body.to_s
-      
+
       html_part = Premailer.new(message.html_part.body.to_s)
-      
-      puts "html_part"
-      puts html_part.inspect
       
       # If mail has a text part then preserve it, else convert html to text
       if message.text_part
