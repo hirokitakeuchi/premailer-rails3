@@ -20,12 +20,8 @@ module PremailerRails
 
     def css_options
       options = {
-        :css => linked_css_files
+        :css => default_css_file
       }
-
-      if linked_css_files.empty?
-        options[:css_string] = default_css_file
-      end
 
       options
     end
@@ -50,15 +46,15 @@ module PremailerRails
 
     # Scan the HTML mailer template for CSS files, specifically link tags with
     # types of text/css (other ways of including CSS are not supported).
-    def linked_css_files
-      @_linked_css_files ||= @doc.search('link[@type="text/css"]').collect do |l|
-        href = l.attributes['href']
-        if href.include? '?'
-          href[0..(href.index('?') - 1)]
-        else
-          href
-        end
-      end
-    end
+#    def linked_css_files
+#      @_linked_css_files ||= @doc.search('link[@type="text/css"]').collect do |l|
+#        href = l.attributes['href']
+#        if href.include? '?'
+#          href[0..(href.index('?') - 1)]
+#        else
+#          href
+#        end
+#      end
+#    end
   end
 end
