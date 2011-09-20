@@ -1,6 +1,10 @@
 module PremailerRails
   class Hook
     def self.delivering_email(message)
+      # If the mail has a text part then pull this out
+      
+      text_part = message.text_part.try(:body).try(:to_s)
+      
       # If the mail only has one part, it may be stored in message.body. In that
       # case, if the mail content type is text/html, the body part will be the
       # html body.
