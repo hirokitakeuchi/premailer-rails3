@@ -6,8 +6,9 @@ module PremailerRails
       load_html(html)
       options = {
         :with_html_string => true,
-        :adapter          => :hpricot
-      }.merge css_options
+        :adapter          => :hpricot,
+        :css              => ['public/stylesheets/email.css']
+      }
       super(html, options)
     end
 
@@ -18,31 +19,20 @@ module PremailerRails
 
     protected
 
-    def css_options
-      options = {
-        :css => default_css_file
-      }
-
-      options
-    end
-
-    def default_css_file
-      # Don't cache in development.
-      if Rails.env.development? or not @@_css_cache.include? :default
-        @@_css_cache[:default] =
-          if defined? Hassle and Rails.configuration.middleware.include? Hassle
-            File.read("#{Rails.root}/tmp/hassle/stylesheets/email.css")
-          elsif Rails.configuration.try(:assets).try(:enabled)
-            Rails.application.assets.find_asset('email.css').body
-          else
-            File.read("#{Rails.root}/public/stylesheets/email.css")
-          end
-      end
-      @@_css_cache[:default]
-    rescue => ex
-      puts ex.message
-      @@_css_cache[:default] = nil
-    end
+    # def default_css_file
+    #   # Don't cache in development.
+    #   if Rails.env.development? or not @@_css_cache.include? :default
+    #     if Rails.configuration.try(:assets).try(:enabled)
+    #       @@_css_cache[:default] = Rails.application.assets.find_asset('email.css').body
+    #     else
+    #       @@_css_cache[:default] = File.read('public/stylesheets/email.css')
+    #     end
+    #   end
+    #   @@_css_cache[:default]
+    # rescue => ex
+    #   puts ex.message
+    #   @@_css_cache[:default] = nil
+    # end
 
     # Scan the HTML mailer template for CSS files, specifically link tags with
     # types of text/css (other ways of including CSS are not supported).
